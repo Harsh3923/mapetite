@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String       @id @default(cuid())
+  email        String       @unique
+  passwordHash String       @map("password_hash")
+  firstName    String?      @map("first_name")
+  lastName     String?      @map("last_name")
+  createdAt    DateTime     @default(now()) @map("created_at")
+  updatedAt    DateTime     @updatedAt @map("updated_at")
+  savedPlaces  SavedPlace[]
+  collections  Collection[]
+
+  @@map("users")
+}
+
+model OtpToken {
+  id        String   @id @default(cuid())
+  email     String
+  code      String
+  purpose   String
+  expiresAt DateTime
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([email, purpose])
+  @@map("otp_tokens")
+}
+
+model Collection {
+  id        String       @id @default(cuid())
+  userId    String       @map("user_id")
+  name      String
+  color     String       @default("#FF8C00")
+  createdAt DateTime     @default(now()) @map("created_at")
+
+  user   User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  places SavedPlace[]
+
+  @@index([userId])
+  @@map("collections")
+}
+
+model SavedPlace {
+  id            String   @id @default(cuid())
+  userId        String   @map("user_id")
+  name          String
+  address       String
+  category      String?
+  latitude      Float
+  longitude     Float
+  mapboxPlaceId String   @map("mapbox_place_id")
+  notes         String?
+  collectionId  String?  @map("collection_id")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  collection Collection? @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+
+  // Prevent saving the same place twice per user
+  @@unique([userId, mapboxPlaceId])
+  @@index([userId])
+  @@index([collectionId])
+  @@map("saved_places")
+}

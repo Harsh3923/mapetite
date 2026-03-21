@@ -1,0 +1,14 @@
+# Environment variables — NEVER commit this
+.env
+.env.local
+.env.production
+
+# Dependencies
+node_modules/
+
+# Prisma generated
+prisma/migrations/*.db
+
+# Logs
+*.log
+npm-debug.log*
