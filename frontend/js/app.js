@@ -12,7 +12,7 @@ import { initCollections, setPlacesGetter } from "./collections.js";
 // ─── Configuration ────────────────────────────────────────────────────────────
 
 export const CONFIG = {
-  API_BASE: "http://localhost:3001/api",
+  API_BASE: "https://mapetite-production.up.railway.app/api",
   // ⚠️  PASTE YOUR MAPTILER API KEY BELOW
   // Get one free at: https://cloud.maptiler.com/account/keys/
   MAPTILER_KEY: "mdrP4F4iWZ6JNXoVAtqR",
