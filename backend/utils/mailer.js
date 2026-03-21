@@ -14,22 +14,14 @@
  * so you can test locally without email configuration.
  */
 
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
-const devMode = !process.env.EMAIL_USER || !process.env.EMAIL_PASS;
+const devMode = !process.env.RESEND_API_KEY;
 
-let transporter = null;
+let resend = null;
 
 if (!devMode) {
-  transporter = nodemailer.createTransport({
-    host: "smtp-relay.brevo.com",
-    port: 587,
-    secure: false,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
+  resend = new Resend(process.env.RESEND_API_KEY);
 }
 
 /**
@@ -82,8 +74,8 @@ export async function sendOtp(to, code, purpose) {
     return;
   }
 
-  await transporter.sendMail({
-    from: `"Mapetite" <${process.env.EMAIL_USER}>`,
+  await resend.emails.send({
+    from: "Mapetite <onboarding@resend.dev>",
     to,
     subject,
     html,
