@@ -15,7 +15,7 @@
 const SOURCE_ID     = "saved-beacons";
 const LAYER_ID      = "saved-beacons-fill";
 const DELTA         = 0.00012;   // ~13 m each way → ~26 × 26 m footprint
-const BEACON_HEIGHT = 5;        // metres the cuboid rises above the rooftop
+const BEACON_HEIGHT = 10;        // metres the cuboid rises above the rooftop
 
 // ─── Module State ─────────────────────────────────────────────────────────────
 
