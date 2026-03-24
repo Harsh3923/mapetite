@@ -539,6 +539,20 @@ a { text-decoration: none; color: inherit; }
   to   { opacity: 1; transform: translateY(-50%) translateX(0); }
 }
 
+.place-card-collapse {
+  display: none;
+  margin: -4px auto 10px;
+  width: 36px; height: 24px;
+  align-items: center; justify-content: center;
+  border-radius: 12px;
+  color: var(--color-text-muted);
+  transition: background 0.15s;
+}
+.place-card-collapse:hover { background: var(--surf-btn-ghost-hover); }
+@media (max-width: 640px) {
+  .place-card-collapse { display: flex; }
+}
+
 .place-card-close {
   position: absolute;
   top: 14px; right: 14px;
@@ -1940,9 +1954,9 @@ a { text-decoration: none; color: inherit; }
     width: 100%;
     transform: none;
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-    padding: 22px 20px 28px;
+    padding: 16px 20px 24px;
     animation: slideUpCard 0.3s var(--ease-out) forwards;
-    max-height: 80dvh;
+    max-height: 58dvh;
     overflow-y: auto;
   }
   @keyframes slideUpCard {

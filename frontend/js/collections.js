@@ -69,8 +69,12 @@ function initCollectionsSidebar() {
   const sidebar = document.getElementById("collections-sidebar");
 
   document.getElementById("btn-collections").addEventListener("click", () => {
-    sidebar.classList.remove("hidden");
-    requestAnimationFrame(() => sidebar.classList.add("open"));
+    if (sidebar.classList.contains("open")) {
+      closeCollectionsSidebar();
+    } else {
+      sidebar.classList.remove("hidden");
+      requestAnimationFrame(() => sidebar.classList.add("open"));
+    }
   });
 
   document.getElementById("collections-sidebar-close").addEventListener("click", closeCollectionsSidebar);

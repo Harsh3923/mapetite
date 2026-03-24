@@ -264,6 +264,7 @@ function closeSearchResults() {
 
 function initPlaceCard() {
   document.getElementById("place-card-close").addEventListener("click", closePlaceCard);
+  document.getElementById("place-card-collapse").addEventListener("click", closePlaceCard);
   document.getElementById("btn-save").addEventListener("click", handleSaveToggle);
   document.getElementById("btn-save-notes").addEventListener("click", handleSaveNotes);
   document.getElementById("btn-add-collection").addEventListener("click", handleAddToCollection);
@@ -531,9 +532,12 @@ function initSidebar() {
   const btnClose = document.getElementById("sidebar-close");
 
   btnSaves.addEventListener("click", () => {
-    sidebar.classList.remove("hidden");
-    // Small delay to trigger CSS transition
-    requestAnimationFrame(() => sidebar.classList.add("open"));
+    if (sidebar.classList.contains("open")) {
+      closeSidebar();
+    } else {
+      sidebar.classList.remove("hidden");
+      requestAnimationFrame(() => sidebar.classList.add("open"));
+    }
   });
 
   btnClose.addEventListener("click", closeSidebar);
