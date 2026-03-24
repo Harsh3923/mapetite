@@ -1953,10 +1953,11 @@ a { text-decoration: none; color: inherit; }
     top: auto; bottom: 0;
     width: 100%;
     transform: none;
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-    padding: 16px 20px 24px;
+    border-radius: 20px 20px 0 0;
+    padding: 12px 20px env(safe-area-inset-bottom, 20px);
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
     animation: slideUpCard 0.3s var(--ease-out) forwards;
-    max-height: 58dvh;
+    max-height: 55dvh;
     overflow-y: auto;
   }
   @keyframes slideUpCard {

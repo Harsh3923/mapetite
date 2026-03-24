@@ -268,6 +268,28 @@ function initPlaceCard() {
   document.getElementById("btn-save").addEventListener("click", handleSaveToggle);
   document.getElementById("btn-save-notes").addEventListener("click", handleSaveNotes);
   document.getElementById("btn-add-collection").addEventListener("click", handleAddToCollection);
+
+  // Close card when tapping outside (on the map)
+  document.addEventListener("click", (e) => {
+    const card = document.getElementById("place-card");
+    if (card.classList.contains("hidden")) return;
+    if (
+      !e.target.closest("#place-card") &&
+      !e.target.closest("#search-results") &&
+      !e.target.closest("#search-input") &&
+      !e.target.closest(".maplibregl-canvas")
+    ) return;
+    if (e.target.closest("#place-card")) return;
+    closePlaceCard();
+  });
+
+  // Close card when tapping the map canvas directly
+  document.getElementById("map").addEventListener("click", (e) => {
+    const card = document.getElementById("place-card");
+    if (!card.classList.contains("hidden") && !e.target.closest("#place-card")) {
+      closePlaceCard();
+    }
+  });
 }
 
 function showPlaceCard(place, isSaved) {
