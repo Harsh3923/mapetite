@@ -1,28 +1,16 @@
 /**
- * mailer.js — Nodemailer Gmail transporter for sending OTP emails.
+ * mailer.js — Brevo Transactional Email API for sending OTP emails.
  *
- * Setup: add to .env
- *   EMAIL_USER=youraddress@gmail.com
- *   EMAIL_PASS=your-16-char-gmail-app-password
+ * Uses Brevo's HTTP REST API (not SMTP) — works on Railway free tier.
  *
- * Gmail App Password guide:
- *   1. Enable 2-Step Verification on your Google Account
- *   2. Go to Security → App passwords → create one for "Mail"
- *   3. Paste the 16-char password (no spaces) as EMAIL_PASS
+ * Required env vars:
+ *   BREVO_API_KEY=your-brevo-api-key
+ *   EMAIL_USER=youraddress@gmail.com  (must be verified as a sender in Brevo)
  *
- * If EMAIL_USER / EMAIL_PASS are not set, OTPs are printed to the console
- * so you can test locally without email configuration.
+ * If either is missing, OTPs are printed to the console (dev mode).
  */
 
-import { Resend } from "resend";
-
-const devMode = !process.env.RESEND_API_KEY;
-
-let resend = null;
-
-if (!devMode) {
-  resend = new Resend(process.env.RESEND_API_KEY);
-}
+const devMode = !process.env.BREVO_API_KEY || !process.env.EMAIL_USER;
 
 /**
  * Sends an OTP email.
@@ -37,9 +25,7 @@ export async function sendOtp(to, code, purpose) {
     ? "Your Mapetite verification code"
     : "Reset your Mapetite password";
 
-  const heading = isRegister
-    ? "Verify your email"
-    : "Reset your password";
+  const heading = isRegister ? "Verify your email" : "Reset your password";
 
   const body = isRegister
     ? "Thanks for joining Mapetite! Use the code below to verify your email address."
@@ -74,10 +60,23 @@ export async function sendOtp(to, code, purpose) {
     return;
   }
 
-  await resend.emails.send({
-    from: "Mapetite <onboarding@resend.dev>",
-    to,
-    subject,
-    html,
+  const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: {
+      "accept": "application/json",
+      "api-key": process.env.BREVO_API_KEY,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      sender: { name: "Mapetite", email: process.env.EMAIL_USER },
+      to: [{ email: to }],
+      subject,
+      htmlContent: html,
+    }),
   });
+
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`Brevo API error ${response.status}: ${err}`);
+  }
 }
