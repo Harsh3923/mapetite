@@ -50,7 +50,7 @@ router.post(
   [
     body("firstName").trim().notEmpty().withMessage("First name is required"),
     body("lastName").trim().notEmpty().withMessage("Last name is required"),
-    body("email").isEmail().normalizeEmail().withMessage("Valid email required"),
+    body("email").isEmail().normalizeEmail({ gmail_remove_dots: false }).withMessage("Valid email required"),
     body("password").isLength({ min: 8 }).withMessage("Password must be at least 8 characters"),
     body("confirmPassword").custom((val, { req }) => {
       if (val !== req.body.password) throw new Error("Passwords do not match");
@@ -149,7 +149,7 @@ router.post("/verify-registration-otp", async (req, res, next) => {
 router.post(
   "/login",
   [
-    body("email").isEmail().normalizeEmail().withMessage("Valid email required"),
+    body("email").isEmail().normalizeEmail({ gmail_remove_dots: false }).withMessage("Valid email required"),
     body("password").notEmpty().withMessage("Password required"),
   ],
   async (req, res, next) => {
@@ -207,7 +207,7 @@ router.post(
 
 router.post(
   "/send-reset-otp",
-  [body("email").isEmail().normalizeEmail().withMessage("Valid email required")],
+  [body("email").isEmail().normalizeEmail({ gmail_remove_dots: false }).withMessage("Valid email required")],
   async (req, res, next) => {
     try {
       const errors = validationResult(req);
