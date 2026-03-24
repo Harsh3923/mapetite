@@ -1950,7 +1950,7 @@ a { text-decoration: none; color: inherit; }
   /* ── Place Card  → bottom sheet ── */
   .place-card {
     right: 0; left: 0;
-    top: 40; bottom: 0;
+    top: 70; bottom: 0;
     width: 100%;
     transform: none;
     border-radius: 20px 20px 0 0;
