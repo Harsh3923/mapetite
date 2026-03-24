@@ -1903,8 +1903,7 @@ a { text-decoration: none; color: inherit; }
   /* hide button labels, keep icons + badge */
   .btn-saves  > svg,
   .btn-collections > svg { display: block; }
-  .btn-saves span:not(.saves-count) { display: none; }
-  .btn-collections span { display: none; }
+  .btn-label { display: none; }
   .btn-saves,
   .btn-collections {
     width: 38px;
